@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  discord-bot:
+    build:
+      context: ./edgar_discord_bot
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./edgar_discord_bot:/app
+
+  http:
+    build:
+      context: ./edgar_http
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./edgar_http:/app
+    ports:
+      - 8080:8080
