@@ -1,0 +1,16 @@
+FROM golang:1.16-alpine
+
+WORKDIR /app
+
+COPY edgar_image/go.mod ./ 
+COPY edgar_image/go.sum ./ 
+
+RUN go mod download
+
+COPY edgar_image/*.go ./ 
+
+RUN go build -o /docker-edgar-formatter
+
+EXPOSE 8080
+
+CMD [ "/docker-edgar-formatter" ]

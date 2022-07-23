@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"image"
 	"image/jpeg"
+	"image/png"
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/nfnt/resize"
 )
@@ -52,11 +54,35 @@ func HandleImageHttp(w http.ResponseWriter, r *http.Request) {
 
 	resize_image := resize.Resize(uint(image_width_int), 0, image, resize.Lanczos3)
 
-	err = jpeg.Encode(w, resize_image, nil)
+	user_accept_header := r.Header.Get("Accept")
 
-	if err != nil {
-		log.Println(err.Error())
-		return
+	fmt.Println(user_accept_header)
+
+	if strings.Contains(user_accept_header, "image/webp") {
+		err = jpeg.Encode(w, resize_image, nil)
+
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+	}
+
+	if format == "image/jpeg" {
+		err = jpeg.Encode(w, resize_image, nil)
+
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+	}
+
+	if format == "image/png" {
+		err = png.Encode(w, resize_image)
+
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
 	}
 
 	return
