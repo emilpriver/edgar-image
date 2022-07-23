@@ -1,18 +1,11 @@
 version: '3.1'
 
 services:
-  discord-bot:
+  image:
     build:
-      context: ./edgar_discord_bot
+      context: ./edgar_image
       dockerfile: Dockerfile-dev
-    volumes:
-      - ./edgar_discord_bot:/app
-
-  http:
-    build:
-      context: ./edgar_http
-      dockerfile: Dockerfile-dev
-    volumes:
-      - ./edgar_http:/app
     ports:
-      - 8080:8080
+     - "8080:8080"
+    volumes:
+     - ./edgar_image:/app
